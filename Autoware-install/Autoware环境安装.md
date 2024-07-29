@@ -28,4 +28,88 @@ $ ubuntu-drivers devices
 
 
 
-## 安装Ros2.galactic
+## 克隆Autoware仓库
+
+```
+$ git clone https://github.com/autowarefoundation/autoware.git -b galactic
+$ cd autoware
+```
+
+## 安装CUDA、Cudnn、TensorRT
+
+cuda 下载链接：https://developer.nvidia.com/cuda-toolkit-archive
+
+cudnn下载链接：https://developer.nvidia.com/cudnn
+
+tensorRT下载链接：https://developer.nvidia.com/nvidia-tensorrt-8x-download
+
+ref:https://github.com/countsp/ubuntu_settings/blob/main/nvidia.md
+
+下载cuda安装的前置包：
+
+```
+$ sudo apt-get install freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev
+```
+
+随后根据下载链接中的引导完成安装
+
+这里我安装了CUDA12.1 cudnn8.9.7 TensorRT 8.6 GA
+
+```
+tar -zxvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-12.0.tar.gz
+```
+
+add to bashrc
+
+```
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/TensorRT-8.6.1.6/lib
+```
+
+​    
+
+为了避免其它软件找不到 TensorRT 的库，建议把 TensorRT 的库和头文件添加到系统路径下
+
+```
+    # TensorRT路径下
+    sudo cp -r lib/* /usr/lib
+    sudo cp -r include/* /usr/include
+```
+
+
+
+## 安装ROS 2 Galactic
+
+```
+$ wget http://fishros.com/install -O fishros && . fishros
+```
+
+只需这一行命令，跟随指示选择即可，如果有基础版和桌面版的选择，选择桌面版
+
+
+
+## 安装ros2_dev_tools
+
+```shell
+# Taken from https://docs.ros.org/en/humble/Installation/Ubuntu-Development-Setup.html
+$ sudo apt update && sudo apt install -y \
+  python3-colcon-mixin \
+  python3-flake8-docstrings \
+  python3-pip \
+  python3-pytest-cov \
+  ros-dev-tools \
+  python3-flake8-blind-except \
+  python3-flake8-builtins \
+  python3-flake8-class-newline \
+  python3-flake8-comprehensions \
+  python3-flake8-deprecated \
+  python3-flake8-import-order \
+  python3-flake8-quotes \
+  python3-pytest-repeat \
+  python3-pytest-rerunfailures
+
+# Initialize rosdep
+$ sudo rosdep init
+$ rosdep update
+```
+
+这个方法不行，显示没有公钥
