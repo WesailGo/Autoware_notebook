@@ -32,9 +32,9 @@ $ ubuntu-drivers devices
 
 ## 克隆Autoware仓库
 
-```
-$ git clone https://github.com/autowarefoundation/autoware.git -b galactic
-$ cd autoware
+```shell
+git clone https://github.com/autowarefoundation/autoware.git -b galactic
+cd autoware
 ```
 
 ## 安装CUDA、Cudnn、TensorRT
@@ -47,34 +47,118 @@ tensorRT下载链接：https://developer.nvidia.com/nvidia-tensorrt-8x-download
 
 ref:https://github.com/countsp/ubuntu_settings/blob/main/nvidia.md
 
-下载cuda安装的前置包：
+~~下载cuda安装的前置包：~~
+
+~~随后根据下载链接中的引导完成安装~~
+
+~~这里我安装了CUDA12.1 cudnn8.9.7 TensorRT 8.6 GA~~
+
+~~为了避免其它软件找不到 TensorRT 的库，建议把 TensorRT 的库和头文件添加到系统路径下~~
+
+需重新安装cuda 11.6.0、cudnn 8.4.0.27、tensorrt 8.4.2.4
+
+首先卸载原cuda、cudnn、tensorrt
+
+删除tensorrt：删除掉之前解压的文件夹，移除环境变量
+
+卸载cuda：
 
 ```shell
-$ sudo apt-get install freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev
+cd /usr/local/cuda-12.1/bin
+sudo ./cuda-uninstaller
+回车选中这三个然后选中done
+sudo rm -rf /usr/local/cuda-12.1
 ```
 
-随后根据下载链接中的引导完成安装
+卸载cudnn：删除原来的cuda即可，可以把原来的包也删除
 
-这里我安装了CUDA12.1 cudnn8.9.7 TensorRT 8.6 GA
+### **接下来重新安装**
+
+#### 安装CUDA11.6.0 
+
+https://developer.nvidia.com/cuda-11-6-0-download-archive
+
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240731105540564.png" alt="image-20240731105540564" style="zoom:50%;" />
 
 ```shell
-tar -zxvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-12.0.tar.gz
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
+sudo apt-key add /var/cuda-repo-ubuntu2004-11-6-local/7fa2af80.pub
+sudo apt-get update
+sudo apt-get -y install cuda
 ```
 
-add to bashrc
+添加环境变量：
 
 ```shell
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/TensorRT-8.6.1.6/lib
+export PATH=$PATH:/usr/local/cuda/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+export CUDA_HOME=$CUDA_HOME:/usr/local/cuda
+
+cd /usr/local
+sudo ln -s ./cuda-11.6/ ./cuda         (软链接换成安装的cuda版本)
 ```
 
-​    
+#### cudnn安装
 
-为了避免其它软件找不到 TensorRT 的库，建议把 TensorRT 的库和头文件添加到系统路径下
+https://developer.nvidia.com/rdp/cudnn-archive
+
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240731110735729.png" alt="image-20240731110735729" style="zoom:67%;" />
+
+解压后：
 
 ```shell
-    # TensorRT路径下
-    sudo cp -r lib/* /usr/lib
-    sudo cp -r include/* /usr/include
+sudo cp cudnn-linux-x86_64-8.4.0.27_cuda11.6-archive/include/* /usr/local/cuda-11.6/include
+sudo cp cudnn-linux-x86_64-8.4.0.27_cuda11.6-archive/lib/libcudnn* /usr/local/cuda-11.6/lib64
+sudo chmod a+r /usr/local/cuda-11.6/include/cudnn.h
+sudo chmod a+r /usr/local/cuda-11.6/lib64/libcudnn*
+```
+
+```shell
+cat /usr/local/cuda-11.6/include/cudnn_version.h | grep CUDNN_MAJOR -A 2  
+#使用该命令进行验证
+```
+
+#### TensorRT安装
+
+https://developer.nvidia.com/nvidia-tensorrt-8x-download
+
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240731140215101.png" alt="image-20240731140215101" style="zoom:50%;" />
+
+```shell
+tar -zxvf TensorRT-8.4.2.4.Linux.x86_64-gnu.cuda-11.6.cudnn8.4.tar.gz
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/bydwyf/work/TensorRT-8.4.2.4/lib
+
+# TensorRT路径下
+sudo cp -r ./lib/* /usr/lib
+sudo cp -r ./include/* /usr/include
+
+# 安装TensorRT
+cd TensorRT-8.4.2.4/python
+pip install tensorrt-8.4.2.4-cp38-none-linux_x86_64.whl
+ 
+# 安装UFF,支持tensorflow模型转化
+cd TensorRT-8.4.2.4/uff
+pip install uff-0.6.9-py2.py3-none-any.whl
+ 
+# 安装graphsurgeon，支持自定义结构
+cd TensorRT-8.4.2.4/graphsurgeon
+pip install graphsurgeon-0.4.6-py2.py3-none-any.whl
+```
+
+然后验证安装是否成功，进入到TensorRT-8.5.3.1/samples/sampleOnnxMNIST路径下，执行
+
+```
+sudo make    
+```
+
+编译成功后显示可执行那个文件在如下目录(TensorRT-8.5.3.1/bin)
+
+```
+./sample_onnx_mnist
 ```
 
 
@@ -152,6 +236,7 @@ sudo apt install golang
 
 ```shell
 cd autoware
+mkdir src
 vcs import src < autoware.repos
 vcs pull src
 ```
@@ -165,18 +250,6 @@ vcs pull src
 ```shell
 sudo apt-get install python3-vcstool
 ```
-
-*出了新的错*
-
-*![image-20240730112923577](/home/bydwyf/.config/Typora/typora-user-images/image-20240730112923577.png)*
-
-*只需在autoware文件夹下创建src文件夹即可*
-
-*<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730125631756.png" alt="image-20240730125631756" style="zoom:50%;" />*
-
-*vcs pull时会提示不在某个分支上，暂时未解决*<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730130036308.png" alt="image-20240730130036308" style="zoom:50%;" />
-
-
 
 继续向下进行
 
@@ -345,10 +418,6 @@ libnl-genl-3-dev
 
 再次进行install
 
-```shell
-rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
-```
-
 <img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730140127907.png" alt="image-20240730140127907" style="zoom:50%;" />
 
 osrf_testing_tools_cpp报错暂不需处理
@@ -363,7 +432,7 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 *报错*
 
-<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730141153105.png" alt="image-20240730141153105" style="zoom: 67%;" />
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730141153105.png" alt="image-20240730141153105"  />
 
 *针对 tensorrt_common的报错：*
 
@@ -377,8 +446,24 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-unused
 
 *报错*
 
-<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730160347051.png" alt="image-20240730160347051" style="zoom: 67%;" />
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240730160347051.png" alt="image-20240730160347051"  />
 
 这次是![image-20240730160400994](/home/bydwyf/.config/Typora/typora-user-images/image-20240730160400994.png)
 
-太多出错，认为是tensorrt的版本问题，决定重新更换版本
+一直报错是 error: ‘nvinfer1::Dims nvinfer1::ICudaEngine::getBindingDimensions(int32_t) const’ is deprecated [-Werror=deprecated-declarations]
+
+处理方法----->重新安装CUDA11.6.0、cudnn8.4.0.27、tensorRT 8.4.2.4 （已更新）
+
+*更新后报错：*
+
+<img src="/home/bydwyf/.config/Typora/typora-user-images/image-20240731143542407.png" alt="image-20240731143542407" style="zoom:50%;" />
+
+进入tensorrt-populate-gitclone.cmake修改里面的8.6.1为8.4.2，因为之前的tensorrt是8.6.1的版本
+
+```shell
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+```
+
+一直不成功，把src文件夹删掉，又从回收站恢复，再次运行，**成功！**（太玄学了）
+
+![image-20240731165121480](/home/bydwyf/.config/Typora/typora-user-images/image-20240731165121480.png)
