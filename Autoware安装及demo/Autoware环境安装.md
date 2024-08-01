@@ -22,11 +22,11 @@
 $ ubuntu-drivers devices
 ```
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240729151328452.png" alt="image-20240729151328452" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240729151328452-1722482057822-28.png" alt="image-20240729151328452" style="zoom:50%;" />
 
 找到recommended，接下来去 软件与更新---->附加驱动 选择相应的驱动，点击应用更改，重启电脑即可，无需禁用原驱动（会导致黑屏）
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240729151515701.png" alt="image-20240729151515701" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240729151515701.png" alt="image-20240729151515701" style="zoom:50%;" />
 
 
 
@@ -78,7 +78,7 @@ sudo rm -rf /usr/local/cuda-12.1
 
 https://developer.nvidia.com/cuda-11-6-0-download-archive
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240731105540564.png" alt="image-20240731105540564" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240731105540564.png" alt="image-20240731105540564" style="zoom:50%;" />
 
 ```shell
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
@@ -105,7 +105,7 @@ sudo ln -s ./cuda-11.6/ ./cuda         (软链接换成安装的cuda版本)
 
 https://developer.nvidia.com/rdp/cudnn-archive
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240731110735729.png" alt="image-20240731110735729" style="zoom:67%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240731110735729.png" alt="image-20240731110735729" style="zoom:67%;" />
 
 解压后：
 
@@ -125,7 +125,7 @@ cat /usr/local/cuda-11.6/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
 
 https://developer.nvidia.com/nvidia-tensorrt-8x-download
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240731140215101.png" alt="image-20240731140215101" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240731140215101.png" alt="image-20240731140215101" style="zoom:50%;" />
 
 ```shell
 tar -zxvf TensorRT-8.4.2.4.Linux.x86_64-gnu.cuda-11.6.cudnn8.4.tar.gz
@@ -243,7 +243,7 @@ vcs pull src
 
 ***报错提示***
 
-*<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730104310773.png" alt="image-20240730104310773" style="zoom: 67%;" />*
+*<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730104310773.png" alt="image-20240730104310773" style="zoom: 67%;" />*
 
 *解决方法：*
 
@@ -264,7 +264,7 @@ rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
 
 *按照提示进行操作*
 
-![image-20240730130153053](/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730130153053.png)
+![image-20240730130153053](./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730130153053.png)
 
 ```shell
 sudo rosdep init
@@ -273,7 +273,7 @@ rosdep update
 
 *在进行 rosdep init 时报错：*
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730130611702.png" alt="image-20240730130611702" style="zoom: 50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730130611702.png" alt="image-20240730130611702" style="zoom: 50%;" />
 
 try this:
 
@@ -418,7 +418,7 @@ libnl-genl-3-dev
 
 再次进行install
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730140127907.png" alt="image-20240730140127907" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730140127907.png" alt="image-20240730140127907" style="zoom:50%;" />
 
 osrf_testing_tools_cpp报错暂不需处理
 
@@ -432,7 +432,7 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 *报错*
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730141153105.png" alt="image-20240730141153105"  />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730141153105.png" alt="image-20240730141153105"  />
 
 *针对 tensorrt_common的报错：*
 
@@ -446,9 +446,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-unused
 
 *报错*
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730160347051.png" alt="image-20240730160347051"  />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730160347051.png" alt="image-20240730160347051"  />
 
-这次是![image-20240730160400994](/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240730160400994.png)
+这次是![image-20240730160400994](./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240730160400994.png)
 
 一直报错是 error: ‘nvinfer1::Dims nvinfer1::ICudaEngine::getBindingDimensions(int32_t) const’ is deprecated [-Werror=deprecated-declarations]
 
@@ -456,7 +456,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-unused
 
 *更新后报错：*
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240731143542407.png" alt="image-20240731143542407" style="zoom:50%;" />
+<img src="./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240731143542407.png" alt="image-20240731143542407" style="zoom:50%;" />
 
 进入tensorrt-populate-gitclone.cmake修改里面的8.6.1为8.4.2，因为之前的tensorrt是8.6.1的版本
 
@@ -466,4 +466,4 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 一直不成功，把src文件夹删掉，又从回收站恢复，再次运行，**成功！**（太玄学了）
 
-![image-20240731165121480](/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware环境安装.assets/image-20240731165121480.png)
+![image-20240731165121480](./Autoware%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85_imgs/image-20240731165121480.png)

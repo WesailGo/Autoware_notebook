@@ -19,7 +19,7 @@ source ~/work/autoware/install/setup.bash
 ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
 ```
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731170916717.png" alt="image-20240731170916717" style="zoom:67%;" />
+<img src="./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731170916717.png" alt="image-20240731170916717" style="zoom:67%;" />
 
 启动成功
 
@@ -31,11 +31,11 @@ ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autowa
 
 - Click the `2D Pose estimate` button in the toolbar, or hit the `P` key.
 
-  <img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731171618673.png" alt="image-20240731171618673" style="zoom:33%;" />
+  <img src="./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731171618673.png" alt="image-20240731171618673" style="zoom:33%;" />
 
 - In the 3D View pane, click and hold the left-mouse button, and  then drag to set the direction for the initial pose. An image  representing the vehicle should now be displayed.
 
-  <img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731171749115.png" alt="image-20240731171749115" style="zoom:50%;" />
+  <img src="./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731171749115.png" alt="image-20240731171749115" style="zoom:50%;" />
 
 操作完3D视图里就出现了车
 
@@ -43,11 +43,11 @@ ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autowa
 
 - Click the `2D Goal Pose` button in the toolbar, or hit the `G` key.、
 
-  <img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731172001540.png" alt="image-20240731172001540" style="zoom:50%;" />
+  <img src="./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731172001540.png" alt="image-20240731172001540" style="zoom:50%;" />
 
 - In the 3D View pane, click and hold the left-mouse button, and  then drag to set the direction for the goal pose. If done correctly, you will see a planned path from initial pose to goal pose.
 
-  <img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731172125160.png" alt="image-20240731172125160" style="zoom:50%;" />
+  ![image-20240731172125160](./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731172125160.png)
 
 #### 启动小汽车
 
@@ -69,6 +69,6 @@ ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autowa
 
 在原本rviz界面中
 
-<img src="/home/bydwyf/work/Autoware_notebook/Autoware安装及demo/Autoware-规划仿真示例.assets/image-20240731172925199.png" alt="image-20240731172925199" style="zoom:67%;" />
+![image-20240731172925199](./Autoware-%E8%A7%84%E5%88%92%E4%BB%BF%E7%9C%9F%E7%A4%BA%E4%BE%8B_imgs/image-20240731172925199.png)
 
 相同的操作逻辑，只是改变起点与终点，在到达时会从lane driving mode 转为 parking mode
