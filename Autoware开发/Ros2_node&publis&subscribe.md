@@ -1,8 +1,142 @@
+
+
 # Ros2进行node建立、消息发布与订阅
 
 > ref：https://github.com/jmtc7/autoware-course/tree/master/02_ROS2_101
 
-## Ros2
+
+
+## Autoware中自定义node进行消息发布
+
+找到相关topic及topic的消息类型
+
+本示例中：
+
+```
+topic : /vehicle/status/steering_status
+msg_type : autoware_auto_vehicle_msgs/msg/SteeringReport
+```
+
+在/src/universe目录下创建自定义节点
+
+```shell
+cd ~/work/autoware/src/universe/
+
+ros2 pkg create --build-type ament_python my_steer
+```
+
+在 `/my_steer/my_steer/`路径下创建`steering_status_publisher.py`
+
+```python
+import rclpy
+from rclpy.node import Node
+from autoware_auto_vehicle_msgs.msg import SteeringReport  # 导入消息类型
+from builtin_interfaces.msg import Time
+from rclpy.time import Time as ROS2Time
+
+class SteeringStatusPublisher(Node):
+    def __init__(self):
+        super().__init__('steering_status_publisher')
+        self.publisher_ = self.create_publisher(SteeringReport, '/vehicle/status/steering_status', 10)
+        self.timer = self.create_timer(1.0, self.publish_message)
+        self.get_logger().info('Steering Status Publisher has been started.')
+
+    def publish_message(self):
+        # 获取当前时间
+        now = self.get_clock().now()
+        
+        # 创建消息
+        msg = SteeringReport()
+        msg.stamp = self.get_clock().now().to_msg()
+        msg.steering_tire_angle = 0.5  # 示例值
+        
+        # # 创建时间戳消息
+        # time_msg = Time()
+        # time_msg.sec = now.seconds
+        # time_msg.nanosec = now.nanoseconds % 1_000_000_000
+        
+        # 将时间戳添加到消息
+        # 假设我们可以在 SteeringReport 中添加时间戳字段
+        # msg.timestamp = time_msg  # 如果消息定义中有时间戳字段
+
+        # 发布消息
+        self.publisher_.publish(msg)
+        self.get_logger().info(f'Publishing: steering_angle={msg.steering_tire_angle}')
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = SteeringStatusPublisher()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+更新`setup.py`
+
+```python
+from setuptools import setup
+
+package_name = 'my_steer'
+
+setup(
+    name=package_name,
+    version='0.0.0',
+    packages=[package_name],
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer='bydwyf',
+    maintainer_email='1192048641@qq.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    tests_require=['pytest'],
+    entry_points={
+        'console_scripts': [
+            'steering_status_publisher = my_steer.steering_status_publisher:main', #改这里
+        ],
+    },
+)
+```
+
+在`/my_steer`路径下创建launch文件夹，创建steering_status_launch.launch.xml文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node pkg="my_steer" exec="steering_status_publisher" name="steering_status_publisher" output="screen"/>
+</launch>
+```
+
+进入`/autoware/src/launcher/autoware_launch/autoware_launch/launch`目录下，打开autoware.launch.xml
+
+在末尾添加自定义包
+
+```xml
+<include file="$(find-pkg-share my_steer)/launch/steering_status_launch.launch.xml"/>
+```
+
+```shell
+#进入主目录 `/work/autoware`
+cd ~/work/autoware/
+
+colcon build --packages-select my_steer
+
+source ~/work/autoware/install/setup.bash
+
+#使用主机启动，不使用仿真器
+ros2 launch autoware_launch autoware.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+```
+
+###########################################################
+
+<!--以下为开发过程记录-->
 
 ##### 启动Autoware
 
