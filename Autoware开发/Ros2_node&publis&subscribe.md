@@ -127,12 +127,26 @@ setup(
 cd ~/work/autoware/
 
 colcon build --packages-select my_steer
+```
 
+colcon build之后还需要在
+
+```
+/home/bydwyf/work/autoware/install/my_steer/share/my_steer
+```
+
+路径下创建launch文件夹，添加相同的steering_status_launch.launch.xml
+
+之后节点创建成功
+
+```shell
 source ~/work/autoware/install/setup.bash
 
 #使用主机启动，不使用仿真器
 ros2 launch autoware_launch autoware.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
 ```
+
+
 
 ###########################################################
 
