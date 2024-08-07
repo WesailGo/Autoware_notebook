@@ -2,9 +2,9 @@
 
 > ref：https://github.com/jmtc7/autoware-course/tree/master/02_ROS2_101
 
+## Ros2
 
-
-#### 启动Autoware
+##### 启动Autoware
 
 ```shell
 source ~/work/autoware/install/setup.bash
@@ -44,12 +44,12 @@ ros2 topic pub --rate 1 /vehicle/status/steering_status autoware_auto_vehicle_ms
 创建package
 
 ```shell
-cd /work/autoware/src/
+cd /work/autoware/src/universe/
 
 ros2 pkg create --build-type ament_python my_steer
 ```
 
-![image-20240807083250829](./Ros2_node&publis&subscribe_imgs/image-20240807083250829.png)
+![image-20240807111822286](./Ros2_node&publis&subscribe_imgs/image-20240807111822286.png)
 
 在 `/my_steer/my_steer/`路径下创建`steering_status_publisher.py`
 
@@ -166,3 +166,41 @@ ros2 run my_steer steering_status_publisher
 打开rqt_graph可以看到已经实现了
 
 ![image-20240807085801533](./Ros2_node&publis&subscribe_imgs/image-20240807085801533.png)
+
+此时打开autoware的rviz界面，可以看到方向盘转角已经有了变化
+
+0.5是弧度值，转为角度为28.6度
+
+![image-20240807090943486](./Ros2_node&publis&subscribe_imgs/image-20240807090943486.png)
+
+解决了为什么在autoware.launch.xml中配置后仍然无法跟随Autoware启动的问题：
+
+将`/my_steer`路径下创建launch文件夹，创建的steering_status_launch.launch.xml文件改为
+
+```shell
+<launch>
+  <node pkg="my_steer" exec="steering_status_publisher" name="steering_status_publisher" output="screen"/>
+</launch>
+#原本的是 pkg="my_steer" type="steering_status_publisher" name="steering_status_publisher" output="screen"
+#type 是ros1的写法，改为exec即可
+```
+
+并且，colcon build之后还需要在
+
+```
+/home/bydwyf/work/autoware/install/my_steer/share/my_steer
+```
+
+路径下创建launch文件夹，添加相同的steering_status_launch.launch.xml
+
+
+
+这样子，就可以按照下列命令启动autoware，该节点也会跟随启动
+
+```shell
+source ~/work/autoware/install/setup.bash
+
+#使用主机启动，不使用仿真器
+ros2 launch autoware_launch autoware.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+```
+
