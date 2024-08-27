@@ -9,6 +9,8 @@ gdown -O ~/autoware_map/ 'https://docs.google.com/uc?export=download&id=1499_nsb
 unzip -d ~/autoware_map ~/autoware_map/sample-map-planning.zip
 ```
 
+sudo apt-get install ros-galactic-ros2bag ros-galactic-rosbag2*
+
 ## Lane Driving Scenario
 
 #### 启动autoware

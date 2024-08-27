@@ -71,3 +71,6 @@ scene 7:
 
 
 
+整理的网络结构如下图
+
+![E2Enode.drawio](./ParkingE2E%20Learning_imgs/E2Enode.drawio.svg)
