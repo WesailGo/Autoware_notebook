@@ -17,6 +17,12 @@
 
 Ubuntu20.04与CUDA参考 ./Autoware环境安装.md
 
+#### CUDA
+
+```
+https://blog.csdn.net/weixin_43702653/article/details/129249585
+```
+
 #### ROS Noetic
 
 ```shell
